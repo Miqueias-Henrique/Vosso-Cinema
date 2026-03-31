@@ -1,0 +1,212 @@
+/* ========================================
+   ROOT & RESET
+======================================== */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #1a1a1a;
+    --bg-card: #212121;
+    --bg-hover: #2d2d2d;
+    --neon-blue: #00d4ff;
+    --neon-purple: #8b5cf6;
+    --neon-pink: #ec4899;
+    --neon-green: #10b981;
+    --neon-orange: #f59e0b;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #6b7280;
+    --gradient-neon: linear-gradient(45deg, #00d4ff, #8b5cf6, #ec4899, #10b981);
+}
+
+/* ========================================
+   GLOBAL - FUNDO PRETO & TEXTO BRANCO
+======================================== */
+body, html {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    padding-top: 80px; /* Espaço para a Navbar fixa */
+}
+
+h1, h2, h3, h4, h5, h6, .display-4 {
+    color: #ffffff !important;
+    font-weight: 700;
+    text-shadow: none !important;
+}
+
+.display-4 {
+    color: var(--neon-blue) !important;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5) !important;
+}
+
+.card-text, p, .lead, .text-muted {
+    color: #e5e7eb !important;
+}
+
+/* ========================================
+   NAVBAR NEON
+======================================== */
+.navbar {
+    background: rgba(10, 10, 10, 0.98) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--neon-blue) !important;
+    background: rgba(0, 212, 255, 0.15);
+}
+
+/* ========================================
+   CARDS & SESSÕES
+======================================== */
+.card {
+    background: linear-gradient(145deg, var(--bg-card), #252525) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.sessao-card {
+    background: linear-gradient(145deg, var(--bg-card), #252525) !important;
+    border-radius: 20px;
+    color: #ffffff !important;
+}
+
+.card-title {
+    color: var(--neon-blue) !important;
+}
+
+/* ========================================
+   FORMULÁRIOS & SELECTS (CORREÇÃO DE CLIQUE)
+======================================== */
+.form-label {
+    color: #ffffff !important;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.form-control, .form-select {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    padding: 0.75rem 1rem !important;
+    min-height: 48px !important;
+    transition: all 0.3s ease;
+}
+
+.form-select {
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+    background-position: right 0.75rem center !important;
+    background-repeat: no-repeat !important;
+    background-size: 1.5em 1.5em !important;
+    padding-right: 3rem !important;
+    cursor: pointer !important;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--neon-blue) !important;
+    box-shadow: 0 0 0 0.25rem rgba(0, 212, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    outline: none !important;
+}
+
+.form-select option {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+/* ========================================
+   BOTÕES NEON
+======================================== */
+.btn {
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+.btn-primary { background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple)); }
+.btn-success { background: linear-gradient(45deg, var(--neon-green), #059669); }
+.btn-danger { background: linear-gradient(45deg, var(--neon-pink), #be123c); }
+.btn-warning { 
+    background: linear-gradient(45deg, var(--neon-orange), #d97706); 
+    color: #000 !important; 
+}
+
+/* ========================================
+   ALERTS - CONTRASTE MÁXIMO
+======================================== */
+.alert {
+    color: #ffffff !important;
+    border: 2px solid !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    animation: slideInUp 0.4s ease-out;
+}
+
+.alert-success { background: linear-gradient(135deg, #10b981, #059669) !important; border-color: #059669 !important; }
+.alert-danger { background: linear-gradient(135deg, #ef4444, #dc2626) !important; border-color: #dc2626 !important; }
+.alert-warning { background: linear-gradient(135deg, #f59e0b, #d97706) !important; border-color: #d97706 !important; color: #000 !important; }
+.alert-info { background: linear-gradient(135deg, #00d4ff, #0ea5e9) !important; border-color: #0ea5e9 !important; }
+
+/* ========================================
+   UTILITÁRIOS & ANIMAÇÕES
+======================================== */
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { 
+    background: linear-gradient(var(--neon-blue), var(--neon-purple)); 
+    border-radius: 4px; 
+}
+
+@media (max-width: 768px) {
+    body { padding-top: 70px; }
+    .form-select, .form-control { font-size: 16px !important; }
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineControl - Cadastro de Filmes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="carregarMenu()"> <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-header">
+                        <h3 class="mb-0 text-neon-cyan"> Cadastro de Filmes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="alertas"></div>
+
+                        <form id="formFilme">
+                            <div class="mb-3">
+                                <label class="form-label">Título *</label>
+                                <input type="text" class="form-control" id="titulo" placeholder="Ex: Cyberpunk: Edgerunners" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Gênero *</label>
+                                <select class="form-select" id="genero" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Ação">Ação</option>
+                                    <option value="Comédia">Comédia</option>
+                                    <option value="Drama">Drama</option>
+                                    <option value="Terror">Terror</option>
+                                    <option value="Romance">Romance</option>
+                                    <option value="Ficção Científica">Ficção Científica</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Descrição</label>
+                                <textarea class="form-control" id="descricao" rows="3" placeholder="Sinopse do filme..."></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Classificação Indicativa *</label>
+                                    <select class="form-select" id="classificacao" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="Livre">Livre</option>
+                                        <option value="10">10 anos</option>
+                                        <option value="12">12 anos</option>
+                                        <option value="14">14 anos</option>
+                                        <option value="16">16 anos</option>
+                                        <option value="18">18 anos</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Duração (minutos) *</label>
+                                    <input type="number" class="form-control" id="duracao" min="1" placeholder="Ex: 120" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Data de Estreia *</label>
+                                <input type="date" class="form-control" id="dataEstreia" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 fw-bold">
+                                 Salvar Filme
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('formFilme').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Monta o objeto conforme os requisitos do PDF 
+            const novoFilme = {
+                id: Date.now(), // Gera um ID único simples
+                titulo: document.getElementById('titulo').value,
+                genero: document.getElementById('genero').value,
+                descricao: document.getElementById('descricao').value,
+                classificacao: document.getElementById('classificacao').value,
+                duracao: parseInt(document.getElementById('duracao').value),
+                dataEstreia: document.getElementById('dataEstreia').value
+            };
+
+            // Usa a lógica centralizada do DB no main.js para salvar [cite: 31, 77, 79]
+            if (DB.salvar('filmes', novoFilme)) {
+                // Cria um alerta visual usando o estilo do CSS
+                const alertasDiv = document.getElementById('alertas');
+                alertasDiv.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                         Filme "${novoFilme.titulo}" cadastrado com sucesso!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                this.reset();
+            }
+        });
+    </script>
+</body>
+</html>
