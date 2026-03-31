@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vosso Cinema - Cadastro de Salas</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body> <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-header">
+                        <h3 class="mb-0 text-neon-cyan"> Cadastro de Salas</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="alertas"></div>
+
+                        <form id="formSala">
+                            <div class="mb-3">
+                                <label class="form-label">Nome da Sala *</label>
+                                <input type="text" class="form-control" id="nomeSala" placeholder="Ex: Sala IMAX 01" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Capacidade *</label>
+                                <input type="number" class="form-control" id="capacidade" min="1" placeholder="Quantidade de assentos" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Tipo de Sala *</label>
+                                <select class="form-select" id="tipo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="2D">2D</option>
+                                    <option value="3D">3D</option>
+                                    <option value="IMAX">IMAX</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 fw-bold">
+                                 Salvar Sala
+                            </button>
+                        </form>
+                        
+                        <div class="mt-5">
+                            <h5 class="text-neon-magenta mb-3">Salas Configuradas:</h5>
+                            <div id="listaSalas" class="list-group">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Função para listar salas com o estilo neon
+        function listarSalas() {
+            const salas = DB.buscar('salas'); // Usa a lógica do main.js
+            const container = document.getElementById('listaSalas');
+            
+            if (salas.length === 0) {
+                container.innerHTML = '<p class="text-muted small">Nenhuma sala cadastrada no momento.</p>';
+                return;
+            }
+
+            container.innerHTML = salas.map(sala => `
+                <div class="list-group-item d-flex justify-content-between align-items-center bg-dark border-secondary text-white mb-2 rounded">
+                    <div>
+                        <strong class="text-neon-cyan">${sala.nome}</strong> 
+                        <span class="badge bg-primary ms-2">${sala.capacidade} lugares</span>
+                        <br><small class="text-secondary">${sala.tipo}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('formSala').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const novaSala = {
+                id: Date.now(),
+                nome: document.getElementById('nomeSala').value,
+                capacidade: parseInt(document.getElementById('capacidade').value),
+                tipo: document.getElementById('tipo').value
+            };
+            
+            // Salva usando o objeto DB centralizado no main.js
+            if (DB.salvar('salas', novaSala)) {
+                const alertas = document.getElementById('alertas');
+                alertas.innerHTML = '<div class="alert alert-success"> Sala cadastrada com sucesso!</div>';
+                setTimeout(() => alertas.innerHTML = '', 3000);
+                
+                this.reset();
+                listarSalas();
+            }
+        });
+
+        // Inicializa a lista ao carregar
+        window.addEventListener('load', listarSalas);
+    </script>
+</body>
+</html>

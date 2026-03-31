@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vosso Cinema - Venda</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow-lg">
+                    <div class="card-header">
+                        <h3 class="mb-0 text-neon-cyan">Venda de Ingressos</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="formIngresso">
+                            <div class="mb-3">
+                                <label class="form-label">Sessao *</label>
+                                <select class="form-select" id="sessao" required>
+                                    <option value="">Selecione uma sessao</option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nome do Cliente *</label>
+                                    <input type="text" class="form-control" id="nomeCliente" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">CPF *</label>
+                                    <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Assento *</label>
+                                    <input type="text" class="form-control" id="assento" placeholder="Ex: A10" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Pagamento *</label>
+                                    <select class="form-select" id="pagamento" required>
+                                        <option value="Cartao">Cartao</option>
+                                        <option value="Pix">Pix</option>
+                                        <option value="Dinheiro">Dinheiro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 fw-bold mt-3">Confirmar Venda</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+       function popularSessoes() {
+    const sessoes = DB.buscar('sessoes');
+    const filmes = DB.buscar('filmes');
+    const select = document.getElementById('sessao');
+
+    sessoes.forEach(s => {
+        const filme = filmes.find(f => f.id === s.filmeId);
+        if (filme) {
+            const opt = new Option(`${filme.titulo} (${new Date(s.dataHora).toLocaleString()})`, s.id);
+            select.add(opt);
+        }
+    });
+
+    // CUMPRIR REQUISITO DO PDF: Pré-selecionar sessão automaticamente
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessaoPreSelecionada = urlParams.get('sessao');
+    if (sessaoPreSelecionada) {
+        select.value = sessaoPreSelecionada;
+    }
+}
+
+        document.getElementById('formIngresso').onsubmit = (e) => {
+            e.preventDefault();
+            const venda = {
+                id: Date.now(),
+                sessaoId: parseInt(document.getElementById('sessao').value),
+                cliente: document.getElementById('nomeCliente').value,
+                cpf: document.getElementById('cpf').value,
+                assento: document.getElementById('assento').value.toUpperCase(),
+                pagamento: document.getElementById('pagamento').value
+            };
+            if (DB.salvar('ingressos', venda)) {
+                alert("Venda realizada com sucesso");
+                window.location.href = 'index.html';
+            }
+        };
+        window.addEventListener('load', popularSessoes);
+    </script>
+</body>
+</html>
