@@ -7,157 +7,85 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body onload="carregarMenu()">
-    </body>
-    <style>
-body { background: #0a0a0a !important; color: white !important; }
-.container { background: transparent !important; }
-</style>
-<link rel="stylesheet" href="css/style.css">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"> Vosso Cinema</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="index.html">Início</a>
-                <a class="nav-link" href="cadastro-filmes.html">Filmes</a>
-                <a class="nav-link" href="cadastro-salas.html">Salas</a>
-                <a class="nav-link" href="cadastro-sessoes.html">Sessões</a>
-                <a class="nav-link active" href="venda-ingressos.html">Vender Ingresso</a>
-                <a class="nav-link" href="sessoes.html">Sessões Disponíveis</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5 pt-5">
+<body>
+    <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="card">
-                    <div class="card-header bg-success text-white">
-                        <h3>💳 Venda de Ingressos</h3>
+                <div class="card shadow-lg">
+                    <div class="card-header">
+                        <h3 class="mb-0 text-neon-cyan">Venda de Ingressos</h3>
                     </div>
                     <div class="card-body">
                         <form id="formIngresso">
                             <div class="mb-3">
-                                <label class="form-label">Sessão *</label>
+                                <label class="form-label">Sessao *</label>
                                 <select class="form-select" id="sessao" required>
-                                    <option value="">Carregando sessões...</option>
+                                    <option value="">Selecione uma sessao</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Nome do Cliente *</label>
-                                <input type="text" class="form-control" id="nomeCliente" required>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nome do Cliente *</label>
+                                    <input type="text" class="form-control" id="nomeCliente" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">CPF *</label>
+                                    <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00" required>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">CPF *</label>
-                                <input type="text" class="form-control" id="cpf" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" 
-                                       placeholder="000.000.000-00" required>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Assento *</label>
+                                    <input type="text" class="form-control" id="assento" placeholder="Ex: A10" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Pagamento *</label>
+                                    <select class="form-select" id="pagamento" required>
+                                        <option value="Cartao">Cartao</option>
+                                        <option value="Pix">Pix</option>
+                                        <option value="Dinheiro">Dinheiro</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Assento (ex: A10, B5) *</label>
-                                <input type="text" class="form-control" id="assento" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Tipo de Pagamento *</label>
-                                <select class="form-select" id="pagamento" required>
-                                    <option value="Cartão">Cartão</option>
-                                    <option value="Pix">Pix</option>
-                                    <option value="Dinheiro">Dinheiro</option>
-                                </select>
-                            </div>
-                            <div id="infoSessao" class="alert alert-info mt-3" style="display: none;">
-                                <strong>Sessão selecionada:</strong> <span id="detalhesSessao"></span>
-                            </div>
-                            <button type="submit" class="btn btn-success w-100">Confirmar Venda</button>
+                            <button type="submit" class="btn btn-success w-100 fw-bold mt-3">Confirmar Venda</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
     <script>
-        // Carregar sessões com detalhes completos
-        function carregarSessoes() {
-            const sessoes = JSON.parse(localStorage.getItem('sessoes')) || [];
-            const filmes = JSON.parse(localStorage.getItem('filmes')) || [];
-            const salas = JSON.parse(localStorage.getItem('salas')) || [];
-            
-            const selectSessao = document.getElementById('sessao');
-            selectSessao.innerHTML = '<option value="">Selecione uma sessão...</option>';
-            
-            sessoes.forEach(sessao => {
-                const filme = filmes.find(f => f.id === sessao.filmeId);
-                const sala = salas.find(s => s.id === sessao.salaId);
-                
-                if (filme && sala) {
-                    const option = document.createElement('option');
-                    option.value = sessao.id;
-                    option.textContent = `${filme.titulo} | ${sala.nome} | ${new Date(sessao.dataHora).toLocaleString('pt-BR')} | R$ ${sessao.preco.toFixed(2)}`;
-                    selectSessao.appendChild(option);
+        function popularSessoes() {
+            const sessoes = DB.buscar('sessoes');
+            const filmes = DB.buscar('filmes');
+            const select = document.getElementById('sessao');
+
+            sessoes.forEach(s => {
+                const filme = filmes.find(f => f.id === s.filmeId);
+                if (filme) {
+                    const opt = new Option(`${filme.titulo} (${new Date(s.dataHora).toLocaleString()})`, s.id);
+                    select.add(opt);
                 }
             });
         }
 
-        // Mostrar detalhes da sessão selecionada
-        document.getElementById('sessao').addEventListener('change', function() {
-            const sessaoId = parseInt(this.value);
-            if (sessaoId) {
-                const sessoes = JSON.parse(localStorage.getItem('sessoes')) || [];
-                const filmes = JSON.parse(localStorage.getItem('filmes')) || [];
-                const salas = JSON.parse(localStorage.getItem('salas')) || [];
-                
-                const sessao = sessoes.find(s => s.id === sessaoId);
-                const filme = filmes.find(f => f.id === sessao.filmeId);
-                const sala = salas.find(s => s.id === sessao.salaId);
-                
-                if (sessao && filme && sala) {
-                    document.getElementById('detalhesSessao').textContent = 
-                        `${filme.titulo} (${sala.nome}) - ${new Date(sessao.dataHora).toLocaleString('pt-BR')} - ${sessao.idioma} - R$ ${sessao.preco.toFixed(2)}`;
-                    document.getElementById('infoSessao').style.display = 'block';
-                }
-            } else {
-                document.getElementById('infoSessao').style.display = 'none';
-            }
-        });
-
-        // Máscara para CPF
-        document.getElementById('cpf').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = value;
-        });
-
-        document.getElementById('formIngresso').addEventListener('submit', function(e) {
+        document.getElementById('formIngresso').onsubmit = (e) => {
             e.preventDefault();
-            
-            const ingresso = {
+            const venda = {
                 id: Date.now(),
                 sessaoId: parseInt(document.getElementById('sessao').value),
-                nomeCliente: document.getElementById('nomeCliente').value,
+                cliente: document.getElementById('nomeCliente').value,
                 cpf: document.getElementById('cpf').value,
                 assento: document.getElementById('assento').value.toUpperCase(),
-                pagamento: document.getElementById('pagamento').value,
-                dataVenda: new Date().toISOString()
+                pagamento: document.getElementById('pagamento').value
             };
-
-            let ingressos = JSON.parse(localStorage.getItem('ingressos')) || [];
-            ingressos.push(ingresso);
-            
-            try {
-                localStorage.setItem('ingressos', JSON.stringify(ingressos));
-                alert(`✅ Ingresso vendido com sucesso!\nAssento: ${ingresso.assento}\nCliente: ${ingresso.nomeCliente}`);
-                this.reset();
-                document.getElementById('infoSessao').style.display = 'none';
-            } catch (e) {
-                alert(' Erro ao salvar: ' + e.message);
+            if (DB.salvar('ingressos', venda)) {
+                alert("Venda realizada com sucesso");
+                window.location.href = 'index.html';
             }
-        });
-
-        // Inicializar
-        carregarSessoes();
+        };
+        window.addEventListener('load', popularSessoes);
     </script>
 </body>
 </html>
