@@ -56,19 +56,26 @@
     </div>
     <script src="js/main.js"></script>
     <script>
-        function popularSessoes() {
-            const sessoes = DB.buscar('sessoes');
-            const filmes = DB.buscar('filmes');
-            const select = document.getElementById('sessao');
+       function popularSessoes() {
+    const sessoes = DB.buscar('sessoes');
+    const filmes = DB.buscar('filmes');
+    const select = document.getElementById('sessao');
 
-            sessoes.forEach(s => {
-                const filme = filmes.find(f => f.id === s.filmeId);
-                if (filme) {
-                    const opt = new Option(`${filme.titulo} (${new Date(s.dataHora).toLocaleString()})`, s.id);
-                    select.add(opt);
-                }
-            });
+    sessoes.forEach(s => {
+        const filme = filmes.find(f => f.id === s.filmeId);
+        if (filme) {
+            const opt = new Option(`${filme.titulo} (${new Date(s.dataHora).toLocaleString()})`, s.id);
+            select.add(opt);
         }
+    });
+
+    // CUMPRIR REQUISITO DO PDF: Pré-selecionar sessão automaticamente
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessaoPreSelecionada = urlParams.get('sessao');
+    if (sessaoPreSelecionada) {
+        select.value = sessaoPreSelecionada;
+    }
+}
 
         document.getElementById('formIngresso').onsubmit = (e) => {
             e.preventDefault();
