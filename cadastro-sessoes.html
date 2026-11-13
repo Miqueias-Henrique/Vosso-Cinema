@@ -16,7 +16,7 @@
                     </div>
                     <div class="card-body">
                         <div id="alertas"></div>
-                        
+
                         <form id="formSessao">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -62,7 +62,7 @@
                         </form>
                     </div>
                 </div>
-                
+
                 <div class="mt-4" id="listaSessoes"></div>
             </div>
         </div>
@@ -71,20 +71,18 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
     <script>
-    // Carrega os selects dinamicamente usando o DB do main.js
     function init() {
         const filmes = DB.buscar('filmes');
         const salas = DB.buscar('salas');
         const selFilme = document.getElementById('filme');
         const selSala = document.getElementById('sala');
 
-        // Garante que o select não duplique opções se a página recarregar
         selFilme.innerHTML = '<option value="">Selecione o filme</option>';
         selSala.innerHTML = '<option value="">Selecione a sala</option>';
 
         filmes.forEach(f => selFilme.add(new Option(f.titulo, f.id)));
         salas.forEach(s => selSala.add(new Option(`${s.nome} (${s.capacidade} lug)`, s.id)));
-        
+
         listar();
     }
 
@@ -93,7 +91,7 @@
         const filmes = DB.buscar('filmes');
         const salas = DB.buscar('salas');
         const container = document.getElementById('listaSessoes');
-        
+
         if (sessoes.length === 0) {
             container.innerHTML = '<p class="text-muted small">Nenhuma sessão cadastrada no momento.</p>';
             return;
@@ -102,19 +100,19 @@
         container.innerHTML = '<div class="list-group">' + sessoes.map(s => {
             const filme = filmes.find(f => f.id === s.filmeId);
             const sala = salas.find(sa => sa.id === s.salaId);
-            
+
             const nomeFilme = filme ? filme.titulo : 'Filme não encontrado';
             const nomeSala = sala ? sala.nome : 'Sala não encontrada';
 
             return `
                 <div class="list-group-item d-flex justify-content-between align-items-center bg-dark border-secondary text-white mb-2 rounded">
                     <div>
-                        <strong class="text-neon-cyan">${nomeFilme}</strong> 
+                        <strong class="text-neon-cyan">${nomeFilme}</strong>
                         <span class="badge bg-primary ms-2">${nomeSala}</span>
                         <br>
                         <small class="text-secondary">
-                            ${new Date(s.dataHora).toLocaleString('pt-BR')} | 
-                            R$ ${parseFloat(s.preco).toFixed(2)} | 
+                            ${new Date(s.dataHora).toLocaleString('pt-BR')} |
+                            R$ ${parseFloat(s.preco).toFixed(2)} |
                             ${s.formato} - ${s.idioma}
                         </small>
                     </div>
@@ -132,7 +130,7 @@
 
     document.getElementById('formSessao').onsubmit = (e) => {
         e.preventDefault();
-        
+
         const novaSessao = {
             id: Date.now(),
             filmeId: parseInt(document.getElementById('filme').value),
@@ -144,11 +142,10 @@
         };
 
         if (DB.salvar('sessoes', novaSessao)) {
-            // Usa o alerta visual na tela
             const alertas = document.getElementById('alertas');
             alertas.innerHTML = '<div class="alert alert-success">Sessão cadastrada com sucesso!</div>';
             setTimeout(() => alertas.innerHTML = '', 3000);
-            
+
             e.target.reset();
             listar();
         }
