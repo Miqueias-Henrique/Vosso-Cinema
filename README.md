@@ -2,7 +2,7 @@
 
 Interface web para gerenciamento de filmes, salas, sessões e venda de ingressos em um cinema, persistindo os dados no navegador com `localStorage`.
 
-Projeto complementar da API [`Back-Vosso-Cinema`](https://github.com/Miqueias-Henrique/Back-Vosso-Cinema).
+Projeto complementar da API [`vosso-cinema-api`](https://github.com/Miqueias-Henrique/vosso-cinema-api).
 
 ## Stack
 
