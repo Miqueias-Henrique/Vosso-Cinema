@@ -1,55 +1,37 @@
-# 🎬 Vosso Cinema
+# Vosso Cinema (Frontend)
 
-Sistema web de gerenciamento de cinema desenvolvido como projeto universitário.
+Interface web para gerenciamento de filmes, salas, sessões e venda de ingressos em um cinema, persistindo os dados no navegador com `localStorage`.
 
-## 📋 Sobre o projeto
+Projeto complementar da API [`Back-Vosso-Cinema`](https://github.com/Miqueias-Henrique/Back-Vosso-Cinema).
 
-O Vosso Cinema é uma aplicação frontend que simula o sistema interno de um cinema, permitindo o gerenciamento completo de filmes, salas, sessões e venda de ingressos — tudo rodando direto no navegador, sem necessidade de servidor.
+## Stack
 
-## ✨ Funcionalidades
-
-- 🎥 **Cadastro de Filmes** — título, gênero, descrição, classificação, duração e data de estreia
-- 🏛️ **Cadastro de Salas** — gerenciamento das salas disponíveis
-- 📅 **Cadastro de Sessões** — criação e controle de sessões por filme e sala
-- 🎟️ **Venda de Ingressos** — interface de vendas integrada às sessões cadastradas
-- 📊 **Grade de Sessões** — listagem visual de todas as sessões disponíveis
-
-## 🛠️ Tecnologias utilizadas
-
-- HTML5
-- CSS3
-- JavaScript (vanilla)
+- HTML5 e CSS3
+- JavaScript (Vanilla)
 - Bootstrap 5
-- LocalStorage (persistência de dados no navegador)
+- `localStorage`
 
-## 🚀 Como rodar
+## Estrutura
 
-1. Clone o repositório:
-```bash
-git clone https://github.com/Miqueias-Henrique/Vosso-Cinema.git
-```
-
-2. Abra o arquivo `Index.html` diretamente no navegador — sem necessidade de instalação ou servidor.
-
-## 📁 Estrutura do projeto
-
-```
-Vosso Cinema/
-├── Index.html
+```text
+├── index.html
 ├── cadastro-filmes.html
 ├── cadastro-salas.html
 ├── cadastro-sessoes.html
 ├── sessoes.html
 ├── venda-ingressos.html
 ├── css/
-│   ├── style.css
-│   └── bootstrap.min.css
+│   ├── bootstrap.min.css
+│   └── style.css
 └── js/
-    ├── main.js
-    ├── js-filmes.js
-    └── script.js
+    ├── bootstrap.bundle.min.js
+    └── main.js
 ```
 
-## 👨‍💻 Autor
+## Como executar
 
-Desenvolvido por **Miqueias Henrique** — Engenharia de Software, UNIFAN
+Abra `index.html` diretamente no navegador ou sirva o diretório com qualquer servidor estático:
+
+```bash
+npx serve .
+```
